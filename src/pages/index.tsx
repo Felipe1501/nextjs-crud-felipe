@@ -1,3 +1,4 @@
+import Button from "../components/Button";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Client from "../core/Client";
@@ -29,6 +30,9 @@ function clientExclused(client: Client){
       text-white
     `}>
       <Layout title="Cadastro Simples">
+        <div className="flex justify-end">
+          <Button cor="green" className="mb-4">Novo Cliente</Button>
+        </div>
         <Table clients={clients} 
         clientSelected={clientSelected}
         clientExclused={clientExclused} />
