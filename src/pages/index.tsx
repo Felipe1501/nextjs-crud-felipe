@@ -7,6 +7,9 @@ import Client from "../core/Client";
 
 export default function Home() {
 
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
+
   const clients = [
     new Client('Ana', 34, '1'),
     new Client('Paulo', 64, '2'),
@@ -16,7 +19,8 @@ export default function Home() {
   ]
  
 function clientSelected(client: Client){
-  console.log(client.name);
+  setClient(client);
+  setVisible('form')
   
 }
 
@@ -25,12 +29,19 @@ function clientExclused(client: Client){
   
 }
 
-function clientSave(client: Client){
-  console.log(client);
+function clientNew(){
+  setClient(Client.empty());
+  setVisible('form')
   
 }
 
-const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
+function clientSave(client: Client){
+  console.log(client);
+  setVisible('tabela')
+  
+}
+
+
 
   return (
     <div className={`
@@ -45,7 +56,7 @@ const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
           <Button 
           cor="green" 
           className="mb-4"
-          onClick={() => setVisible('form')}
+          onClick={clientNew}
           >
             Novo Cliente
             </Button>
@@ -57,7 +68,7 @@ const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
         </>
         ) : (
         <Forms 
-        client={clients[4]}
+        client={client}
         canceled={() => setVisible('tabela')}
         onChanged={clientSave}
         />
