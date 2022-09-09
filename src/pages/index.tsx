@@ -1,55 +1,20 @@
-import { useEffect, useState } from "react";
-import ClientsColletion from "../backend/db/ClientColletion";
-import ResposClient from "../backend/ReposClient";
 import Button from "../components/Button";
 import Forms from "../components/Forms";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
-import Client from "../core/Client";
+import useClients from "../hooks/useClients";
 
 export default function Home() {
 
-  const repo: ResposClient = new ClientsColletion()
-
-  const [client, setClient] = useState<Client>(Client.empty());
-  const [clients, setClients] = useState<Client[]>([]);
-  const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
-
-  useEffect(getAll, []);
-  
-  function getAll(){
-    repo.allClients()
-      .then(clients =>{
-          setClients(clients)
-          setVisible('tabela')
-      })
-}
- 
-function clientSelected(client: Client){
-  setClient(client);
-  setVisible('form')
-  
-}
-
-async function clientExclused(client: Client){
-  await repo.delete(client)
-  getAll();
-  
-}
-
-function clientNew(){
-  setClient(Client.empty());
-  setVisible('form')
-  
-}
-
-async function clientSave(client: Client){
-  await repo.save(client)
-  getAll();
-  
-}
-
-
+  const {
+     client,
+     clients, 
+     clientNew, 
+     clientSave, 
+     clientExclused, 
+     clientSelected,
+    tableVisible,
+  exibTable} = useClients()
 
   return (
     <div className={`
@@ -58,7 +23,7 @@ async function clientSave(client: Client){
       text-white
     `}>
       <Layout title="Cadastro Simples">
-        {visible === 'tabela' ? (
+        {tableVisible ? (
         <>
         <div className="flex justify-end">
           <Button 
@@ -77,7 +42,7 @@ async function clientSave(client: Client){
         ) : (
         <Forms 
         client={client}
-        canceled={() => setVisible('tabela')}
+        canceled={() => exibTable}
         onChanged={clientSave}
         />
         )}
