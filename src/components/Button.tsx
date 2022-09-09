@@ -5,7 +5,7 @@ interface ButtonProps{
 }
 
 export default function Button(props: ButtonProps){
-    const cor = props.cor ?? 'gray'
+    const cor = props.cor ?? 'gray';
     return(
         <button className={`
             bg-gradient-to-r from-${cor}-400 to-${cor}-700
