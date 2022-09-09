@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "../components/Button";
 import Forms from "../components/Forms";
 import Layout from "../components/Layout";
@@ -24,6 +25,13 @@ function clientExclused(client: Client){
   
 }
 
+function clientSave(client: Client){
+  console.log(client);
+  
+}
+
+const [visible, setVisible] = useState<'tabela' | 'form'>('tabela');
+
   return (
     <div className={`
       flex justify-center items-center h-screen
@@ -31,13 +39,29 @@ function clientExclused(client: Client){
       text-white
     `}>
       <Layout title="Cadastro Simples">
+        {visible === 'tabela' ? (
+        <>
         <div className="flex justify-end">
-          <Button cor="green" className="mb-4">Novo Cliente</Button>
+          <Button 
+          cor="green" 
+          className="mb-4"
+          onClick={() => setVisible('form')}
+          >
+            Novo Cliente
+            </Button>
         </div>
-        {/*<Table clients={clients} 
+        <Table clients={clients} 
         clientSelected={clientSelected}
-  clientExclused={clientExclused} />*/}
-        <Forms client={clients[4]}/>
+  clientExclused={clientExclused} 
+        />
+        </>
+        ) : (
+        <Forms 
+        client={clients[4]}
+        canceled={() => setVisible('tabela')}
+        onChanged={clientSave}
+        />
+        )}
       </Layout>
     </div>
   )
